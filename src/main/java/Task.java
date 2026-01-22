@@ -15,15 +15,12 @@ public class Task {
     }
 
     // when a task is not done mark as false
-    public void Undone() {
-        this.isDone = false;
-
-    }
+    public void Undone() { this.isDone = false; }
 
     // String to print status
     @Override
     public String toString() {
-        return (isDone? "[X]" : "[ ]") + des;
+        return (isDone? "[X]" : "[ ] ") + des;
     }
 
 }
