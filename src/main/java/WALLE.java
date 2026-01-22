@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 class WAllE {
 
@@ -9,8 +10,8 @@ class WAllE {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
 
-        // Stores all task
-        Task[] tasks = new Task[MAX_TASKS];
+        // Stores all task (use ArrayList so delete is easy)
+        ArrayList<Task> tasks = new ArrayList<>();
 
         // Tracks current number of task stored
         int taskCount = 0;
@@ -45,21 +46,24 @@ class WAllE {
                     System.out.println("  mark <task number>");
                     System.out.println("  unmark <task number>");
                     System.out.println("  bye");
+                    System.out.println("  find <keyword>");
+                    System.out.println("  delete <task number>");
                     System.out.println(LINE);
                     continue;
                 }
 
                 // Shows all task to user
+                // Use Array function
                 if (input.equals("list")) {
                     System.out.println(LINE);
                     System.out.println("Here are the tasks in your list:");
 
                     // If list is empty
-                    if (taskCount == 0) {
+                    if (tasks.isEmpty()) {
                         System.out.println("  (no tasks yet)");
                     } else {
-                        for (int i = 0; i < taskCount; i++) {
-                            System.out.println((i + 1) + "." + tasks[i]);
+                        for (int i = 0; i < tasks.size(); i++) {
+                            System.out.println((i + 1) + "." + tasks.get(i));
                         }
                     }
 
@@ -67,30 +71,79 @@ class WAllE {
                     continue;
                 }
 
+                // Command to find tasks by keyword
+                // Format: find <keyword>
+                if (input.toLowerCase().startsWith("find ")) {
+                    String keyword = input.substring(5).trim();
+
+                    // If keyword is empty, show error
+                    if (keyword.isEmpty()) {
+                        throw new WAllEException("Oops — please provide a keyword to find. (e.g., find book)");
+                    }
+
+                    System.out.println(LINE);
+                    System.out.println("Here are the matching tasks in your list:");
+
+                    boolean found = false;
+                    for (int i = 0; i < tasks.size(); i++) {
+                        if (tasks.get(i).toString().toLowerCase().contains(keyword.toLowerCase())) {
+                            System.out.println((i + 1) + "." + tasks.get(i));
+                            found = true;
+                        }
+                    }
+
+                    // If nothing is found
+                    if (!found) {
+                        System.out.println("  (no matching tasks found)");
+                    }
+
+                    System.out.println(LINE);
+                    continue;
+                }
+
+                // Level 6: Delete task from the list
+                // Format: delete <task number>
+                if (input.toLowerCase().startsWith("delete ")) {
+                    int idx = parseIndex(input.substring(7).trim(), "delete", tasks.size());
+
+                    // Remove task and shift list automatically (ArrayList feature)
+                    Task removed = tasks.remove(idx - 1);
+
+                    System.out.println(LINE);
+                    System.out.println("Noted. I've removed this task:");
+                    System.out.println("  " + removed);
+                    System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                    System.out.println(LINE);
+                    continue;
+                }
+
+
 
 
                 // Code to mark task as done
                 if (input.toLowerCase().startsWith("mark ")) {
                     int idx = parseIndex(input.substring(5).trim(), "mark", taskCount);
 
-                    tasks[idx - 1].Done();
+                    tasks.get(idx - 1).Done();
 
                     System.out.println(LINE);
                     System.out.println("Nice! I've marked this task as done:");
-                    System.out.println("  " + tasks[idx - 1]);
+                    System.out.println("  " + tasks.get(idx - 1));
                     System.out.println(LINE);
                     continue;
                 }
+
+
 
                 // Code to mark task as undone
                 if (input.toLowerCase().startsWith("unmark ")) {
                     int idx = parseIndex(input.substring(7).trim(), "unmark", taskCount);
 
-                    tasks[idx - 1].Undone();
+                    tasks.get(idx - 1).Undone();
 
                     System.out.println(LINE);
                     System.out.println("OK, I've marked this task as not done yet:");
-                    System.out.println("  " + tasks[idx - 1]);
+                    System.out.println("  " + tasks.get(idx - 1));
                     System.out.println(LINE);
                     continue;
                 }
@@ -115,8 +168,8 @@ class WAllE {
                     }
 
                     Task t = new Todo(desc);
-                    tasks[taskCount++] = t;
-                    printAdded(t, taskCount);
+                    tasks.add(t);
+                    printAdded(t, tasks.size());
                     continue;
                 }
 
@@ -128,7 +181,7 @@ class WAllE {
                     }
 
                     Task t = parseDeadline(input);
-                    tasks[taskCount++] = t;
+                    tasks.add(t);
                     printAdded(t, taskCount);
                     continue;
                 }
@@ -141,7 +194,7 @@ class WAllE {
                     }
 
                     Task t = parseEvent(input);
-                    tasks[taskCount++] = t;
+                    tasks.add(t);
                     printAdded(t, taskCount);
                     continue;
                 }
