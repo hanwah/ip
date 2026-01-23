@@ -13,8 +13,6 @@ class WAllE {
         // Stores all task (use ArrayList so delete is easy)
         ArrayList<Task> tasks = new ArrayList<>();
 
-        // Tracks current number of task stored
-        int taskCount = 0;
 
         // Greeting
         System.out.println("Hello! my name is WAllE");
@@ -27,6 +25,7 @@ class WAllE {
 
             try {
                 // Code to exit
+                // EqualsIgnoreCase allow the code to work if user decides to use capital letters
                 if (input.equalsIgnoreCase("bye")) {
                     System.out.println(LINE);
                     System.out.println("Bye. Hope to see you again soon!");
@@ -78,7 +77,7 @@ class WAllE {
 
                     // If keyword is empty, show error
                     if (keyword.isEmpty()) {
-                        throw new WAllEException("Oops — please provide a keyword to find. (e.g., find book)");
+                        throw new WAllEException("Oops — please provide a keyword to find. (e.g., find meeting)");
                     }
 
                     System.out.println(LINE);
@@ -101,12 +100,12 @@ class WAllE {
                     continue;
                 }
 
-                // Level 6: Delete task from the list
+                // Delete task from the list
                 // Format: delete <task number>
                 if (input.toLowerCase().startsWith("delete ")) {
                     int idx = parseIndex(input.substring(7).trim(), "delete", tasks.size());
 
-                    // Remove task and shift list automatically (ArrayList feature)
+                    // Remove task and shift list automatically
                     Task removed = tasks.remove(idx - 1);
 
                     System.out.println(LINE);
@@ -122,7 +121,7 @@ class WAllE {
 
                 // Code to mark task as done
                 if (input.toLowerCase().startsWith("mark ")) {
-                    int idx = parseIndex(input.substring(5).trim(), "mark", taskCount);
+                    int idx = parseIndex(input.substring(5).trim(), "mark", tasks.size());
 
                     tasks.get(idx - 1).Done();
 
@@ -137,7 +136,7 @@ class WAllE {
 
                 // Code to mark task as undone
                 if (input.toLowerCase().startsWith("unmark ")) {
-                    int idx = parseIndex(input.substring(7).trim(), "unmark", taskCount);
+                    int idx = parseIndex(input.substring(7).trim(), "unmark", tasks.size());
 
                     tasks.get(idx - 1).Undone();
 
@@ -163,7 +162,7 @@ class WAllE {
                     }
 
                     // If task list is full, show error
-                    if (taskCount >= MAX_TASKS) {
+                    if (tasks.size() >= MAX_TASKS) {
                         throw new WAllEException("Oops — your task list is full. (max " + MAX_TASKS + " tasks)");
                     }
 
@@ -176,26 +175,26 @@ class WAllE {
                 // creates a deadline task
                 if (input.startsWith("deadline ")) {
                     // If task list is full, show error
-                    if (taskCount >= MAX_TASKS) {
+                    if (tasks.size() >= MAX_TASKS) {
                         throw new WAllEException("Oops — your task list is full. (max " + MAX_TASKS + " tasks)");
                     }
 
                     Task t = parseDeadline(input);
                     tasks.add(t);
-                    printAdded(t, taskCount);
+                    printAdded(t, tasks.size());
                     continue;
                 }
 
                 // Create an Event task
                 if (input.startsWith("event ")) {
                     // If task list is full, show error
-                    if (taskCount >= MAX_TASKS) {
+                    if (tasks.size() >= MAX_TASKS) {
                         throw new WAllEException("Oops — your task list is full. (max " + MAX_TASKS + " tasks)");
                     }
 
                     Task t = parseEvent(input);
                     tasks.add(t);
-                    printAdded(t, taskCount);
+                    printAdded(t, tasks.size());
                     continue;
                 }
 
@@ -208,7 +207,6 @@ class WAllE {
                 );
 
             } catch (WAllEException e) {
-                // Handles WAllE-specific errors
                 System.out.println(LINE);
                 System.out.println(e.getMessage());
                 System.out.println(LINE);
@@ -235,7 +233,7 @@ class WAllE {
         System.out.println(LINE);
     }
 
-    // Parses index number for commands that need a task number + checks bounds
+
     private static int parseIndex(String s, String commandName, int taskCount) throws WAllEException {
         // If user did not provide a number
         if (s.isEmpty()) {
