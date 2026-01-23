@@ -37,7 +37,7 @@ class WAllE {
                 // This helps user understand what commands are supported
                 if (input.equalsIgnoreCase("help")) {
                     System.out.println(LINE);
-                    System.out.println("Here are the commands you can use:");
+                    System.out.println("Here are the currently supported commands that you can use =>:");
                     System.out.println("  list");
                     System.out.println("  todo <description>");
                     System.out.println("  deadline <description> /by <when>");
