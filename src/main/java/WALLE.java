@@ -234,6 +234,8 @@ class WAllE {
     }
 
 
+    // AI attribution, used ChatGPT to brainstorm error cases (missing /from, /to, /by, invalid indexes).
+    // index parsing  exception cases inspired by ChatGPT
     private static int parseIndex(String s, String commandName, int taskCount) throws WAllEException {
         // If user did not provide a number
         if (s.isEmpty()) {
@@ -259,6 +261,7 @@ class WAllE {
         return idx;
     }
 
+    // Deadline helper function exception cases inspired by ChatGPT
     private static Deadline parseDeadline(String input) throws WAllEException {
         // Format : deadline <desc> /by <by> , use keyword by to seperate task and date
         int byPos = input.indexOf(" /by ");
@@ -284,6 +287,7 @@ class WAllE {
         return new Deadline(desc, by);
     }
 
+    // Event helper function exception cases inspired by ChatGPT
     private static Event parseEvent(String input) throws WAllEException {
         // Format: event <desc> /from <from> /to <to>, use keyword from/to to seperate date/time
         int fromPos = input.indexOf(" /from ");
