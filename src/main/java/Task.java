@@ -1,26 +1,34 @@
 public class Task {
 
     private final String des;
-    private boolean isDone;
+    // Used enum instead of boolean
+    private Status status;
 
     // des stands for description
     public Task(String des) {
         this.des = des;
-        this.isDone = false;
+        this.status = Status.NOT_DONE;
     }
 
     // When a task is done mark as true
     public void Done() {
-        this.isDone = true;
+        status = Status.DONE;
     }
 
     // when a task is not done mark as false
-    public void Undone() { this.isDone = false; }
+    public void Undone() {
+        status = Status.NOT_DONE;
+    }
 
-    // String to print status
+
+    public boolean isDone() {
+        return status == Status.DONE;
+    }
+
     @Override
     public String toString() {
-        return (isDone? "[X]" : "[ ] ") + des;
+        String box = (status == Status.DONE) ? "[X] " : "[ ] ";
+        return box + des;
     }
 
 }
