@@ -16,7 +16,7 @@ class WAllE {
 
         // Greeting
         System.out.println("Hello! my name is WAllE");
-        System.out.println("What can I do for you?");
+        System.out.println("What can I do for you? If you are unfamiliar you can type 'help' to see all supported commands");
         System.out.println(LINE);
 
         // Loop for chatbot, to exit user must input "bye"
@@ -28,7 +28,7 @@ class WAllE {
                 // EqualsIgnoreCase allow the code to work if user decides to use capital letters
                 if (input.equalsIgnoreCase("bye")) {
                     System.out.println(LINE);
-                    System.out.println("Bye. Hope to see you again soon!");
+                    System.out.println("Goodbye!. Hope to see you again soon!");
                     System.out.println(LINE);
                     break;
                 }
@@ -55,11 +55,11 @@ class WAllE {
                 // Use Array function
                 if (input.equals("list")) {
                     System.out.println(LINE);
-                    System.out.println("Here are the tasks in your list:");
+                    System.out.println("These are all your task:");
 
                     // If list is empty
                     if (tasks.isEmpty()) {
-                        System.out.println("  (no tasks yet)");
+                        System.out.println("  (You have no task)");
                     } else {
                         for (int i = 0; i < tasks.size(); i++) {
                             System.out.println((i + 1) + "." + tasks.get(i));
