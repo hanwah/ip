@@ -28,7 +28,7 @@ class WAllE {
                 // EqualsIgnoreCase allow the code to work if user decides to use capital letters
                 if (input.equalsIgnoreCase("bye")) {
                     System.out.println(LINE);
-                    System.out.println("Goodbye!. Hope to see you again soon!");
+                    System.out.println("Goodbye!");
                     System.out.println(LINE);
                     break;
                 }
@@ -59,8 +59,9 @@ class WAllE {
 
                     // If list is empty
                     if (tasks.isEmpty()) {
-                        System.out.println("  (You have no task)");
+                        System.out.println("  (You have no task available)");
                     } else {
+                        // Loops through the array for all available task
                         for (int i = 0; i < tasks.size(); i++) {
                             System.out.println((i + 1) + "." + tasks.get(i));
                         }
@@ -126,7 +127,7 @@ class WAllE {
                     tasks.get(idx - 1).Done();
 
                     System.out.println(LINE);
-                    System.out.println("Nice! I've marked this task as done:");
+                    System.out.println("Nice! The task you have selected is now mark as done:");
                     System.out.println("  " + tasks.get(idx - 1));
                     System.out.println(LINE);
                     continue;
@@ -141,7 +142,7 @@ class WAllE {
                     tasks.get(idx - 1).Undone();
 
                     System.out.println(LINE);
-                    System.out.println("OK, I've marked this task as not done yet:");
+                    System.out.println("OK, the task you have selected is now marked as undone:");
                     System.out.println("  " + tasks.get(idx - 1));
                     System.out.println(LINE);
                     continue;
@@ -201,7 +202,7 @@ class WAllE {
                 // If command is unknown, treat it as an error
                 // Provide user with the commands
                 throw new WAllEException(
-                        "Oops — I don't recognise that command.\n" +
+                        "I don't recognise that command.\n" +
                                 "Try: help, list, todo <desc>, deadline <desc> /by <when>, " +
                                 "event <desc> /from <start> /to <end>, mark <num>, unmark <num>, bye"
                 );
