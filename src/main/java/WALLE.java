@@ -1,7 +1,7 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 
-class WAllE {
+class WALLE {
 
     // Max number of tasks to store
     private static final int MAX_TASKS = 100;
@@ -15,7 +15,7 @@ class WAllE {
 
 
         // Greeting
-        System.out.println("Hello! my name is WAllE");
+        System.out.println("Hello! my name is WALLE");
         System.out.println("What can I do for you? If you are unfamiliar you can type 'help' to see all supported commands");
         System.out.println(LINE);
 
