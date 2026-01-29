@@ -1,12 +1,12 @@
 public class Task {
 
-    private final String des;
+    private final String description;
     // Used enum instead of boolean
     private Status status;
 
     // des stands for description
-    public Task(String des) {
-        this.des = des;
+    public Task(String description) {
+        this.description = description;
         this.status = Status.NOT_DONE;
     }
 
@@ -28,7 +28,13 @@ public class Task {
     @Override
     public String toString() {
         String box = (status == Status.DONE) ? "[X] " : "[ ] ";
-        return box + des;
+        return box + description;
     }
+
+    public String getDescription() {
+        return description; // change if your field name differs
+    }
+
+
 
 }

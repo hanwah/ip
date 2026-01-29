@@ -1,17 +1,29 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.IOException;
+import java.util.List;
+
 
 class WALLE {
 
     // Max number of tasks to store
     private static final int MAX_TASKS = 100;
     private static final String LINE = "____________________________________________________________";
+    // Location of the saved file
+    private static final Path SAVE_PATH = Paths.get("data", "walle.txt");
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
 
         // Stores all task (use ArrayList so delete is easy)
         ArrayList<Task> tasks = new ArrayList<>();
+        // Loads existing saved task from data/walle.txt
+        loadTasks(tasks);
+
+
 
 
         // Greeting
@@ -108,6 +120,7 @@ class WALLE {
 
                     // Remove task and shift list automatically
                     Task removed = tasks.remove(idx - 1);
+                    saveTasks(tasks);
 
                     System.out.println(LINE);
                     System.out.println("Noted. I've removed this task:");
@@ -125,6 +138,7 @@ class WALLE {
                     int idx = parseIndex(input.substring(5).trim(), "mark", tasks.size());
 
                     tasks.get(idx - 1).Done();
+                    saveTasks(tasks);
 
                     System.out.println(LINE);
                     System.out.println("Nice! The task you have selected is now mark as done:");
@@ -140,6 +154,7 @@ class WALLE {
                     int idx = parseIndex(input.substring(7).trim(), "unmark", tasks.size());
 
                     tasks.get(idx - 1).Undone();
+                    saveTasks(tasks);
 
                     System.out.println(LINE);
                     System.out.println("OK, the task you have selected is now marked as undone:");
@@ -169,6 +184,7 @@ class WALLE {
 
                     Task t = new Todo(desc);
                     tasks.add(t);
+                    saveTasks(tasks);
                     printAdded(t, tasks.size());
                     continue;
                 }
@@ -182,6 +198,7 @@ class WALLE {
 
                     Task t = parseDeadline(input);
                     tasks.add(t);
+                    saveTasks(tasks);
                     printAdded(t, tasks.size());
                     continue;
                 }
@@ -195,6 +212,7 @@ class WALLE {
 
                     Task t = parseEvent(input);
                     tasks.add(t);
+                    saveTasks(tasks);
                     printAdded(t, tasks.size());
                     continue;
                 }
@@ -320,4 +338,106 @@ class WALLE {
 
         return new Event(desc, from, to);
     }
+
+    // Helper function to save task into designated .txt file
+    private static void saveTasks(ArrayList<Task> tasks) throws WAllEException {
+        try {
+            Files.createDirectories(SAVE_PATH.getParent()); // creates ./data if missing
+
+            ArrayList<String> lines = new ArrayList<>();
+            for (Task t : tasks) {
+                lines.add(serializeTask(t));
+            }
+            Files.write(SAVE_PATH, lines);
+
+        } catch (IOException e) {
+            throw new WAllEException("Oops — couldn't save tasks: " + e.getMessage());
+        }
+    }
+
+    // helper function to load the saved task file
+    private static void loadTasks(ArrayList<Task> tasks) {
+
+        if (!Files.exists(SAVE_PATH)) {return;}
+
+        try {
+            List<String> lines = Files.readAllLines(SAVE_PATH);
+            for (String line : lines) {
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+                Task t = parseSavedLine(line);
+                tasks.add(t);
+            }
+        } catch (Exception e) {
+            System.out.println(LINE);
+            System.out.println("Warning: save file is corrupted/unreadable, starting with empty list.");
+            System.out.println(LINE);
+        }
+    }
+
+    // Helper function to save the task in a format such that it can be read properly
+    private static String serializeTask(Task t) {
+        // File format:
+        // T | doneBit | description
+        // D | doneBit | description | by
+        // E | doneBit | description | from | to
+
+        String doneBit = t.isDone() ? "1" : "0";
+
+        if (t instanceof Todo) {
+            return "T | " + doneBit + " | " + t.getDescription();
+        }
+        if (t instanceof Deadline) {
+            Deadline d = (Deadline) t;
+            return "D | " + doneBit + " | " + d.getDescription() + " | " + d.getBy();
+        }
+        if (t instanceof Event) {
+            Event e = (Event) t;
+            return "E | " + doneBit + " | " + e.getDescription() + " | " + e.getFrom() + " | " + e.getTo();
+        }
+
+        return "T | " + doneBit + " | " + t.getDescription();
+    }
+
+    //AI attribution (ChatGPT): Parsing strategy for saved lines (tokenising, validation, and type-to-class mapping).
+    private static Task parseSavedLine(String line) throws WAllEException {
+        String[] parts = line.split("\\s*\\|\\s*");
+
+        if (parts.length < 3) {
+            throw new WAllEException("Invalid save line: " + line);
+        }
+
+        String type = parts[0].trim();
+        boolean done = parts[1].trim().equals("1");
+        String desc = parts[2].trim();
+
+        Task t;
+        switch (type) {
+            case "T":
+                t = new Todo(desc);
+                break;
+            case "D":
+                if (parts.length < 4) throw new WAllEException("Invalid deadline line: " + line);
+                t = new Deadline(desc, parts[3].trim());
+                break;
+            case "E":
+                if (parts.length < 5) throw new WAllEException("Invalid event line: " + line);
+                t = new Event(desc, parts[3].trim(), parts[4].trim());
+                break;
+            default:
+                throw new WAllEException("Unknown task type in save file: " + type);
+        }
+
+        if (done) {
+            t.Done();
+        } else {
+            t.Undone();
+        }
+
+        return t;
+    }
+
+
+
 }
