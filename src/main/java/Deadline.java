@@ -1,17 +1,24 @@
-public class Deadline extends Task {
-    private final String date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-    public Deadline(String description, String date) {
+//Changed Deadline task to work with localDate
+public class Deadline extends Task {
+    private final LocalDateTime by;
+
+    private static final DateTimeFormatter OUT_FMT =
+            DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm"); // e.g. Oct 15 2019 18:00
+
+    public Deadline(String description, LocalDateTime by) {
         super(description);
-        this.date = date;
+        this.by = by;
+    }
+
+    public LocalDateTime getBy() {
+        return by;
     }
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + date + ")";
-    }
-
-    public String getBy() {
-        return date;
+        return "[D]" + super.toString() + " (by: " + by.format(OUT_FMT) + ")";
     }
 }

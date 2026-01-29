@@ -1,10 +1,19 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+
+//Read/write files
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.IOException;
 import java.util.List;
+
+// Localdate
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 
 
 class WALLE {
@@ -14,6 +23,13 @@ class WALLE {
     private static final String LINE = "____________________________________________________________";
     // Location of the saved file
     private static final Path SAVE_PATH = Paths.get("data", "walle.txt");
+
+    private static final DateTimeFormatter EVENT_IN_FMT =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+    private static final DateTimeFormatter SAVE_DATE_FMT = DateTimeFormatter.ISO_LOCAL_DATE; // yyyy-MM-dd
+    private static final DateTimeFormatter SAVE_DATE_TIME_FMT = DateTimeFormatter.ISO_LOCAL_DATE_TIME; // yyyy-MM-ddTHH:mm
+
+
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
@@ -52,8 +68,8 @@ class WALLE {
                     System.out.println("Here are the currently supported commands that you can use =>:");
                     System.out.println("  list");
                     System.out.println("  todo <description>");
-                    System.out.println("  deadline <description> /by <when>");
-                    System.out.println("  event <description> /from <start> /to <end>");
+                    System.out.println("  deadline <description> /by <yyyy-MM-dd HHmm>");
+                    System.out.println("  event <description> /from <yyyy-MM-dd HHmm> /to <yyyy-MM-dd HHmm>");
                     System.out.println("  mark <task number>");
                     System.out.println("  unmark <task number>");
                     System.out.println("  bye");
@@ -282,29 +298,31 @@ class WALLE {
 
     // Deadline helper function exception cases inspired by ChatGPT
     private static Deadline parseDeadline(String input) throws WAllEException {
-        // Format : deadline <desc> /by <by> , use keyword by to seperate task and date
         int byPos = input.indexOf(" /by ");
 
-        // If user did not include /by
         if (byPos == -1) {
-            throw new WAllEException("Oops — deadline format should be:\n  deadline <description> /by <when>");
+            throw new WAllEException("Oops — deadline format should be:\n  deadline <description> /by <yyyy-MM-dd HHmm>");
         }
 
         String desc = input.substring("deadline ".length(), byPos).trim();
-        String by = input.substring(byPos + " /by ".length()).trim();
+        String byStr = input.substring(byPos + " /by ".length()).trim();
 
-        // If description is empty
         if (desc.isEmpty()) {
             throw new WAllEException("Oops — the description of a deadline cannot be empty.");
         }
-
-        // If by is empty
-        if (by.isEmpty()) {
+        if (byStr.isEmpty()) {
             throw new WAllEException("Oops — the /by part of a deadline cannot be empty.");
         }
 
-        return new Deadline(desc, by);
+        try {
+            // deadline now accepts date+time
+            LocalDateTime by = LocalDateTime.parse(byStr, EVENT_IN_FMT);
+            return new Deadline(desc, by);
+        } catch (DateTimeParseException e) {
+            throw new WAllEException("Oops — use yyyy-MM-dd HHmm (e.g., 2019-10-15 1800).");
+        }
     }
+
 
     // Event helper function exception cases inspired by ChatGPT
     private static Event parseEvent(String input) throws WAllEException {
@@ -318,8 +336,8 @@ class WALLE {
         }
 
         String desc = input.substring("event ".length(), fromPos).trim();
-        String from = input.substring(fromPos + " /from ".length(), toPos).trim();
-        String to = input.substring(toPos + " /to ".length()).trim();
+        String fromStr = input.substring(fromPos + " /from ".length(), toPos).trim();
+        String toStr = input.substring(toPos + " /to ".length()).trim();
 
         // If description is empty
         if (desc.isEmpty()) {
@@ -327,16 +345,29 @@ class WALLE {
         }
 
         // If from is empty
-        if (from.isEmpty()) {
+        if (fromStr.isEmpty()) {
             throw new WAllEException("Oops — the /from part of an event cannot be empty.");
         }
 
         // If to is empty
-        if (to.isEmpty()) {
+        if (toStr.isEmpty()) {
             throw new WAllEException("Oops — the /to part of an event cannot be empty.");
         }
 
-        return new Event(desc, from, to);
+        try {
+            LocalDateTime from = LocalDateTime.parse(fromStr, EVENT_IN_FMT);
+            LocalDateTime to = LocalDateTime.parse(toStr, EVENT_IN_FMT);
+
+            if (to.isBefore(from)) {
+                throw new WAllEException("Oops — event end time must be after start time.");
+            }
+
+            return new Event(desc, from, to);
+
+        } catch (DateTimeParseException e) {
+            throw new WAllEException("Oops — use yyyy-MM-dd HHmm (e.g., 2019-10-15 1800).");
+        }
+
     }
 
     // Helper function to save task into designated .txt file
@@ -390,17 +421,19 @@ class WALLE {
         }
         if (t instanceof Deadline) {
             Deadline d = (Deadline) t;
-            return "D | " + doneBit + " | " + d.getDescription() + " | " + d.getBy();
+            return "D | " + doneBit + " | " + d.getDescription() + " | " + d.getBy().format(SAVE_DATE_TIME_FMT);
         }
         if (t instanceof Event) {
             Event e = (Event) t;
-            return "E | " + doneBit + " | " + e.getDescription() + " | " + e.getFrom() + " | " + e.getTo();
+            return "E | " + doneBit + " | " + e.getDescription()
+                    + " | " + e.getFrom().format(SAVE_DATE_TIME_FMT)
+                    + " | " + e.getTo().format(SAVE_DATE_TIME_FMT);
         }
 
         return "T | " + doneBit + " | " + t.getDescription();
     }
 
-    //AI attribution (ChatGPT): Parsing strategy for saved lines (tokenising, validation, and type-to-class mapping).
+    // AI attribution (ChatGPT): Suggested validation + parsing flow for saved lines
     private static Task parseSavedLine(String line) throws WAllEException {
         String[] parts = line.split("\\s*\\|\\s*");
 
@@ -413,27 +446,34 @@ class WALLE {
         String desc = parts[2].trim();
 
         Task t;
-        switch (type) {
-            case "T":
-                t = new Todo(desc);
-                break;
-            case "D":
-                if (parts.length < 4) throw new WAllEException("Invalid deadline line: " + line);
-                t = new Deadline(desc, parts[3].trim());
-                break;
-            case "E":
-                if (parts.length < 5) throw new WAllEException("Invalid event line: " + line);
-                t = new Event(desc, parts[3].trim(), parts[4].trim());
-                break;
-            default:
-                throw new WAllEException("Unknown task type in save file: " + type);
+        try {
+            switch (type) {
+                case "T":
+                    t = new Todo(desc);
+                    break;
+
+                case "D":
+                    if (parts.length < 4) throw new WAllEException("Invalid deadline line: " + line);
+                    LocalDateTime by = LocalDateTime.parse(parts[3].trim(), SAVE_DATE_TIME_FMT);
+                    t = new Deadline(desc, by);
+                    break;
+
+                case "E":
+                    if (parts.length < 5) throw new WAllEException("Invalid event line: " + line);
+                    LocalDateTime from = LocalDateTime.parse(parts[3].trim(), SAVE_DATE_TIME_FMT);
+                    LocalDateTime to = LocalDateTime.parse(parts[4].trim(), SAVE_DATE_TIME_FMT);
+                    t = new Event(desc, from, to);
+                    break;
+
+                default:
+                    throw new WAllEException("Unknown task type in save file: " + type);
+            }
+        } catch (DateTimeParseException e) {
+            throw new WAllEException("Invalid date/time in save line: " + line);
         }
 
-        if (done) {
-            t.Done();
-        } else {
-            t.Undone();
-        }
+        if (done) t.Done();
+        else t.Undone();
 
         return t;
     }
