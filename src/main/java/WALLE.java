@@ -32,10 +32,11 @@ class WALLE {
 
 
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
+        Ui ui = new Ui();
 
         // Stores all task (use ArrayList so delete is easy)
         ArrayList<Task> tasks = new ArrayList<>();
+
         // Loads existing saved task from data/walle.txt
         loadTasks(tasks);
 
@@ -43,39 +44,26 @@ class WALLE {
 
 
         // Greeting
-        System.out.println("Hello! my name is WALLE");
-        System.out.println("What can I do for you? If you are unfamiliar you can type 'help' to see all supported commands");
-        System.out.println(LINE);
+        ui.showWelcome();
 
         // Loop for chatbot, to exit user must input "bye"
         while (true) {
-            String input = in.nextLine();
+            String input = ui.readCommand();
 
             try {
                 // Code to exit
                 // EqualsIgnoreCase allow the code to work if user decides to use capital letters
                 if (input.equalsIgnoreCase("bye")) {
-                    System.out.println(LINE);
-                    System.out.println("Goodbye!");
-                    System.out.println(LINE);
+                    ui.showGoodbye();
                     break;
                 }
 
                 // Command to show available commands to user
                 // This helps user understand what commands are supported
                 if (input.equalsIgnoreCase("help")) {
-                    System.out.println(LINE);
-                    System.out.println("Here are the currently supported commands that you can use =>:");
-                    System.out.println("  list");
-                    System.out.println("  todo <description>");
-                    System.out.println("  deadline <description> /by <yyyy-MM-dd HHmm>");
-                    System.out.println("  event <description> /from <yyyy-MM-dd HHmm> /to <yyyy-MM-dd HHmm>");
-                    System.out.println("  mark <task number>");
-                    System.out.println("  unmark <task number>");
-                    System.out.println("  bye");
-                    System.out.println("  find <keyword>");
-                    System.out.println("  delete <task number>");
-                    System.out.println(LINE);
+                    ui.showLine();
+                    ui.showHelp();
+                    ui.showLine();
                     continue;
                 }
 
@@ -83,15 +71,15 @@ class WALLE {
                 // Use Array function
                 if (input.equals("list")) {
                     System.out.println(LINE);
-                    System.out.println("These are all your task:");
+                    ui.showMessage("These are all your task:");
 
                     // If list is empty
                     if (tasks.isEmpty()) {
-                        System.out.println("  (You have no task available)");
+                        ui.showMessage("  (You have no task available)");
                     } else {
                         // Loops through the array for all available task
                         for (int i = 0; i < tasks.size(); i++) {
-                            System.out.println((i + 1) + "." + tasks.get(i));
+                           ui.showMessage((i + 1) + "." + tasks.get(i));
                         }
                     }
 
