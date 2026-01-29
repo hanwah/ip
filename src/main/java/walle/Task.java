@@ -1,3 +1,5 @@
+package walle;
+
 public class Task {
 
     private final String description;

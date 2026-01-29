@@ -1,3 +1,5 @@
+package walle;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -97,7 +99,7 @@ public class Parser {
         return idx;
     }
 
-    // Deadline helper function exception cases inspired by ChatGPT
+    // walle.Deadline helper function exception cases inspired by ChatGPT
     public static Deadline parseDeadline(String input) throws WAllEException {
         int byPos = input.indexOf(" /by ");
 
@@ -124,7 +126,7 @@ public class Parser {
     }
 
 
-    // Event helper function exception cases inspired by ChatGPT
+    // walle.Event helper function exception cases inspired by ChatGPT
     public static Event parseEvent(String input) throws WAllEException {
         int fromPos = input.indexOf(" /from ");
         int toPos = input.indexOf(" /to ");

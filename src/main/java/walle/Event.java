@@ -1,7 +1,9 @@
+package walle;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-// Changed Event class to work with LocalDate
+// Changed walle.Event class to work with LocalDate
 public class Event extends Task {
     private final LocalDateTime from;
     private final LocalDateTime to;

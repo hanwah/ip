@@ -1,4 +1,4 @@
-# WALLE User Guide
+# walle.WALLE User Guide
 
 // Update the title above to match the actual product name
 

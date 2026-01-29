@@ -1,3 +1,5 @@
+package walle;
+
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -6,7 +8,7 @@ public class Ui {
     private final Scanner in = new Scanner(System.in);
 
     public void showWelcome() {
-        System.out.println("Hello! my name is WALLE");
+        System.out.println("Hello! my name is walle.WALLE");
         System.out.println("What can I do for you? If you are unfamiliar you can type 'help' to see all supported commands");
         System.out.println(LINE);
     }
