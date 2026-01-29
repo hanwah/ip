@@ -161,4 +161,21 @@ public class Parser {
             throw new WAllEException("Oops — use yyyy-MM-dd HHmm (e.g., 2019-10-15 1800).");
         }
     }
+
+    // while handling different commands such as "mark ", "unmark ", "delete "
+    // AI attribution: Suggested using small wrapper methods to reuse parseIndex()
+    public static int parseMarkIndex(String input, int taskCount) throws WAllEException {
+        return parseIndex(input.substring(5).trim(), "mark", taskCount);
+    }
+
+
+    public static int parseUnmarkIndex(String input, int taskCount) throws WAllEException {
+        return parseIndex(input.substring(7).trim(), "unmark", taskCount);
+    }
+
+
+    public static int parseDeleteIndex(String input, int taskCount) throws WAllEException {
+        return parseIndex(input.substring(7).trim(), "delete", taskCount);
+    }
+
 }
