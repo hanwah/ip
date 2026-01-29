@@ -21,13 +21,6 @@ class WALLE {
     // Max number of tasks to store
     private static final int MAX_TASKS = 100;
     private static final String LINE = "____________________________________________________________";
-    // Location of the saved file
-    private static final Path SAVE_PATH = Paths.get("data", "walle.txt");
-
-    private static final DateTimeFormatter EVENT_IN_FMT =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
-    private static final DateTimeFormatter SAVE_DATE_FMT = DateTimeFormatter.ISO_LOCAL_DATE; // yyyy-MM-dd
-    private static final DateTimeFormatter SAVE_DATE_TIME_FMT = DateTimeFormatter.ISO_LOCAL_DATE_TIME; // yyyy-MM-ddTHH:mm
 
 
 
@@ -38,7 +31,7 @@ class WALLE {
         ArrayList<Task> tasks = new ArrayList<>();
 
         // Loads existing saved task from data/walle.txt
-        loadTasks(tasks);
+
 
 
 
@@ -358,113 +351,8 @@ class WALLE {
 
     }
 
-    // Helper function to save task into designated .txt file
-    private static void saveTasks(ArrayList<Task> tasks) throws WAllEException {
-        try {
-            Files.createDirectories(SAVE_PATH.getParent()); // creates ./data if missing
 
-            ArrayList<String> lines = new ArrayList<>();
-            for (Task t : tasks) {
-                lines.add(serializeTask(t));
-            }
-            Files.write(SAVE_PATH, lines);
 
-        } catch (IOException e) {
-            throw new WAllEException("Oops — couldn't save tasks: " + e.getMessage());
-        }
-    }
-
-    // helper function to load the saved task file
-    private static void loadTasks(ArrayList<Task> tasks) {
-
-        if (!Files.exists(SAVE_PATH)) {return;}
-
-        try {
-            List<String> lines = Files.readAllLines(SAVE_PATH);
-            for (String line : lines) {
-                if (line.trim().isEmpty()) {
-                    continue;
-                }
-                Task t = parseSavedLine(line);
-                tasks.add(t);
-            }
-        } catch (Exception e) {
-            System.out.println(LINE);
-            System.out.println("Warning: save file is corrupted/unreadable, starting with empty list.");
-            System.out.println(LINE);
-        }
-    }
-
-    // Helper function to save the task in a format such that it can be read properly
-    private static String serializeTask(Task t) {
-        // File format:
-        // T | doneBit | description
-        // D | doneBit | description | by
-        // E | doneBit | description | from | to
-
-        String doneBit = t.isDone() ? "1" : "0";
-
-        if (t instanceof Todo) {
-            return "T | " + doneBit + " | " + t.getDescription();
-        }
-        if (t instanceof Deadline) {
-            Deadline d = (Deadline) t;
-            return "D | " + doneBit + " | " + d.getDescription() + " | " + d.getBy().format(SAVE_DATE_TIME_FMT);
-        }
-        if (t instanceof Event) {
-            Event e = (Event) t;
-            return "E | " + doneBit + " | " + e.getDescription()
-                    + " | " + e.getFrom().format(SAVE_DATE_TIME_FMT)
-                    + " | " + e.getTo().format(SAVE_DATE_TIME_FMT);
-        }
-
-        return "T | " + doneBit + " | " + t.getDescription();
-    }
-
-    // AI attribution (ChatGPT): Suggested validation + parsing flow for saved lines
-    private static Task parseSavedLine(String line) throws WAllEException {
-        String[] parts = line.split("\\s*\\|\\s*");
-
-        if (parts.length < 3) {
-            throw new WAllEException("Invalid save line: " + line);
-        }
-
-        String type = parts[0].trim();
-        boolean done = parts[1].trim().equals("1");
-        String desc = parts[2].trim();
-
-        Task t;
-        try {
-            switch (type) {
-                case "T":
-                    t = new Todo(desc);
-                    break;
-
-                case "D":
-                    if (parts.length < 4) throw new WAllEException("Invalid deadline line: " + line);
-                    LocalDateTime by = LocalDateTime.parse(parts[3].trim(), SAVE_DATE_TIME_FMT);
-                    t = new Deadline(desc, by);
-                    break;
-
-                case "E":
-                    if (parts.length < 5) throw new WAllEException("Invalid event line: " + line);
-                    LocalDateTime from = LocalDateTime.parse(parts[3].trim(), SAVE_DATE_TIME_FMT);
-                    LocalDateTime to = LocalDateTime.parse(parts[4].trim(), SAVE_DATE_TIME_FMT);
-                    t = new Event(desc, from, to);
-                    break;
-
-                default:
-                    throw new WAllEException("Unknown task type in save file: " + type);
-            }
-        } catch (DateTimeParseException e) {
-            throw new WAllEException("Invalid date/time in save line: " + line);
-        }
-
-        if (done) t.Done();
-        else t.Undone();
-
-        return t;
-    }
 
 
 
