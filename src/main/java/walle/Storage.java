@@ -1,3 +1,5 @@
+package walle;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,10 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Localdate
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 public class Storage {
 
