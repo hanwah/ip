@@ -19,6 +19,8 @@ public class WALLE {
 
         ui.showWelcome();
 
+
+
         while (true) {
             String input = ui.readCommand();
 
