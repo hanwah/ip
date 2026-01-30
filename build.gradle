@@ -6,10 +6,10 @@ plugins {
 }
 
 
-
 shadowJar {
     archiveBaseName = "duke"
     archiveClassifier = null
+    archiveFileName = 'walle.jar'
 }
 
 run{
