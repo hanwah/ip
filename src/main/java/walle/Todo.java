@@ -6,6 +6,7 @@ public class Todo extends Task {
         super(des);
     }
 
+    // Display the Tdodo task
     @Override
     public String toString() {
         return  "[T]" + super.toString();

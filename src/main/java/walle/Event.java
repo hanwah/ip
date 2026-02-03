@@ -25,6 +25,7 @@ public class Event extends Task {
         return to;
     }
 
+    // Display the string for Event task
     @Override
     public String toString() {
         return "[E]" + super.toString()
