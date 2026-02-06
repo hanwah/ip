@@ -3,76 +3,76 @@ package walle;
 import java.util.ArrayList;
 
 public class TaskList {
-    private final ArrayList<Task> tasks;
+    private final ArrayList<Task> tasks = new ArrayList<>();
 
-    // Creates an empty task list
-    public TaskList() {
-        this.tasks = new ArrayList<>();
-    }
+    public TaskList() {}
 
-    // Load existing task list from storage
-    public TaskList(ArrayList<Task> initialTasks) {
-        this.tasks = initialTasks == null ? new ArrayList<>() : initialTasks;
-    }
-
-    public boolean isEmpty() {
-        return tasks.isEmpty();
+    public TaskList(ArrayList<Task> loaded) {
+        tasks.addAll(loaded);
     }
 
     public int size() {
         return tasks.size();
     }
 
-
-    public Task get(int index) throws WAllEException {
-        int i = index - 1;
-        if (i < 0 || i >= tasks.size()) {
-            throw new WAllEException("Oops — task number " + index
-                    + " is out of range. Use 'list' to see valid task numbers.");
-        }
-        return tasks.get(i);
+    public ArrayList<Task> getTasks() {
+        return tasks;
     }
 
-    // Add new task to the list
-    public void add(Task t) throws WAllEException {
-        if (tasks.size() >= 100) {
-            throw new WAllEException("Oops — your task list is full. (max 100 tasks)");
-        }
+    public void add(Task t) {
         tasks.add(t);
     }
 
-
-    // Remove task from the list
-    public Task remove(int index) throws WAllEException {
-        Task t = get(index);
-        tasks.remove(index - 1);
+    public Task addTodo(String desc) {
+        Task t = new Todo(desc);
+        tasks.add(t);
         return t;
     }
 
-    // Marks a task as done
-    public void mark(int index) throws WAllEException {
-        get(index).Done();
+    public Task delete(int idx1Based) {
+        return tasks.remove(idx1Based - 1);
     }
 
-    // Unmarks a task
-    public void unmark(int index) throws WAllEException {
-        get(index).Undone();
+    public Task mark(int idx1Based) {
+        Task t = tasks.get(idx1Based - 1);
+        t.Done();
+        return t;
+    }
+
+    public Task unmark(int idx1Based) {
+        Task t = tasks.get(idx1Based - 1);
+        t.Undone();
+        return t;
+    }
+
+    public boolean isEmpty() {
+        return tasks.isEmpty();
     }
 
 
-    // Finds a task which contain the keyword by looping through all existing task
-    public ArrayList<Task> find(String keyword) {
-        ArrayList<Task> matches = new ArrayList<>();
-        for (Task t : tasks) {
-            if (t.toString().toLowerCase().contains(keyword.toLowerCase())) {
-                matches.add(t);
+    public String toDisplayString() {
+        if (tasks.isEmpty()) {
+            return "(You have no task available)";
+        }
+        StringBuilder sb = new StringBuilder("These are all your tasks:\n");
+        for (int i = 0; i < tasks.size(); i++) {
+            sb.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
+        }
+        return sb.toString().trim();
+    }
+
+    public String findToDisplayString(String keyword) {
+        StringBuilder sb = new StringBuilder("Here are the matching tasks in your list:\n");
+        boolean found = false;
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).toString().toLowerCase().contains(keyword.toLowerCase())) {
+                sb.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
+                found = true;
             }
         }
-        return matches;
-    }
-
-
-    public ArrayList<Task> asArrayList() {
-        return tasks;
+        if (!found) {
+            return "Here are the matching tasks in your list:\n(no matching tasks found)";
+        }
+        return sb.toString().trim();
     }
 }
