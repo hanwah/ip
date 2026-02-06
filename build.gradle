@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'application'
-//    id 'checkstyle'
+    id 'checkstyle'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'org.openjfx.javafxplugin' version '0.0.14'
 }
@@ -29,10 +29,18 @@ repositories {
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }
 
-//checkstyle {
-//    toolVersion = '10.12.7'
-//    configFile = file('config/checkstyle/checkstyle.xml')
-//}
+checkstyle {
+    toolVersion = '10.12.7'
+    configFile = file('config/checkstyle/checkstyle.xml')
+}
+
+configurations {
+    checkstyle {
+        exclude group: "com.google.collections", module: "google-collections"
+    }
+}
+
+
 
 java {
     toolchain {
