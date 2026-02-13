@@ -9,6 +9,7 @@ public class WALLE {
         ui = new Ui();
         storage = new Storage(saveFilePath);
 
+
         TaskList loaded;
         try {
             loaded = new TaskList(storage.load());
@@ -28,6 +29,7 @@ public class WALLE {
 
     // Main API for GUI: give user input, get response text
     public String getResponse(String input) {
+        assert input != null : "UI should never pass null input";
         try {
             if (Parser.isBye(input)) {
                 return "Goodbye!";

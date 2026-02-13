@@ -8,6 +8,8 @@ public class Task {
 
     // des stands for description
     public Task(String description) {
+        assert description != null : "description should not be null";
+        assert !description.isBlank() : "description should not be blank";
         this.description = description;
         this.status = Status.NOT_DONE;
     }
