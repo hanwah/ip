@@ -53,6 +53,8 @@ public class Parser {
 
 
     public static String parseTodoDescription(String input) throws WAllEException {
+        assert input != null : "input should not be null";
+        assert isTodo(input) : "parseTodoDescription called when input is not a todo command";
         if (input.trim().equals("todo")) {
             throw new WAllEException("Oops — the description of a todo cannot be empty.");
         }
@@ -65,6 +67,8 @@ public class Parser {
     }
 
     public static String parseFindKeyword(String input) throws WAllEException {
+        assert input != null : "input should not be null";
+        assert isFind(input) : "parseFindKeyword called when input is not a find command";
         String keyword = input.substring(5).trim(); // after "find "
         if (keyword.isEmpty()) {
             throw new WAllEException("Oops — please provide a keyword to find. (e.g., find meeting)");
@@ -75,6 +79,9 @@ public class Parser {
     // AI attribution, used ChatGPT to brainstorm error cases (missing /from, /to, /by, invalid indexes).
     // index parsing  exception cases inspired by ChatGPT
     private static int parseIndex(String s, String commandName, int taskCount) throws WAllEException {
+        assert commandName != null && !commandName.isBlank() : "commandName must be set";
+        assert taskCount >= 0 : "taskCount should never be negative";
+
         // If user did not provide a number
         if (s.isEmpty()) {
             throw new WAllEException("Oops — please provide a task number for " + commandName
@@ -101,6 +108,8 @@ public class Parser {
 
     // walle.Deadline helper function exception cases inspired by ChatGPT
     public static Deadline parseDeadline(String input) throws WAllEException {
+        assert input != null : "input should not be null";
+        assert isDeadline(input) : "parseDeadline called when input is not a deadline command";
         int byPos = input.indexOf(" /by ");
 
         if (byPos == -1) {
@@ -128,6 +137,8 @@ public class Parser {
 
     // walle.Event helper function exception cases inspired by ChatGPT
     public static Event parseEvent(String input) throws WAllEException {
+        assert input != null : "input should not be null";
+        assert isEvent(input) : "parseEvent called when input is not an event command";
         int fromPos = input.indexOf(" /from ");
         int toPos = input.indexOf(" /to ");
 
@@ -167,16 +178,23 @@ public class Parser {
     // while handling different commands such as "mark ", "unmark ", "delete "
     // AI attribution: Suggested using small wrapper methods to reuse parseIndex()
     public static int parseMarkIndex(String input, int taskCount) throws WAllEException {
+        assert input != null : "input should not be null";
+        assert isMark(input) : "parseMarkIndex called when input is not a mark command";
         return parseIndex(input.substring(5).trim(), "mark", taskCount);
     }
 
 
+
     public static int parseUnmarkIndex(String input, int taskCount) throws WAllEException {
+        assert input != null : "input should not be null";
+        assert isMark(input) : "parseMarkIndex called when input is not a unmark command";
         return parseIndex(input.substring(7).trim(), "unmark", taskCount);
     }
 
 
     public static int parseDeleteIndex(String input, int taskCount) throws WAllEException {
+        assert input != null : "input should not be null";
+        assert isMark(input) : "parseMarkIndex called when input is not a delete command";
         return parseIndex(input.substring(7).trim(), "delete", taskCount);
     }
 
