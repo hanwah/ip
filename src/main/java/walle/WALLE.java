@@ -15,6 +15,11 @@ public class WALLE {
     }
 
 
+    /**
+     * Main chatbot logic controller.
+     * Receives user input, coordinates parsing and task operations, and
+     * returns the response string for the UI to display.
+     */
     public WALLE(String saveFilePath) {
         ui = new Ui();
         storage = new Storage(saveFilePath);
@@ -37,7 +42,13 @@ public class WALLE {
                 + "If you are unfamiliar you can type 'help' to see all supported commands";
     }
 
-    // Main API for GUI: give user input, get response text
+    /**
+     * Processes the user input and returns the chatbot response.
+     *
+     * @param input Raw user input.
+     * @return Response text to be shown to the user.
+     */
+
     public String getResponse(String input) {
         assert input != null : "UI should never pass null input";
         try {

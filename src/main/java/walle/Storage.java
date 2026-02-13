@@ -12,6 +12,11 @@ import java.util.List;
 // Localdate
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Handles loading tasks from disk and saving tasks to disk.
+ * Responsible for persistence of the task list.
+ */
+
 public class Storage {
 
     // Location of the saved file
@@ -20,11 +25,17 @@ public class Storage {
     private static final DateTimeFormatter SAVE_DATE_FMT = DateTimeFormatter.ISO_LOCAL_DATE;
     private static final DateTimeFormatter SAVE_DATE_TIME_FMT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
+
     public Storage(String filePath) {
         this.savePath = Paths.get(filePath);
     }
 
-    // Helper function to load tasks from file
+    /**
+     * Loads tasks from the save file.
+     *
+     * @return A task list containing tasks read from storage.
+     * @throws WAllEException If the file cannot be read or data format is invalid.
+     */
     public ArrayList<Task> load() throws WAllEException {
         ArrayList<Task> tasks = new ArrayList<>();
 
@@ -47,7 +58,13 @@ public class Storage {
         }
     }
 
-    // Helper function to save task into designated .txt file
+    /**
+     * Saves tasks to the save file, overwriting existing content.
+     *
+     * @param tasks The tasks to be saved.
+     * @throws WAllEException If the file cannot be written.
+     */
+
     public void save(ArrayList<Task> tasks) throws WAllEException {
         try {
             if (savePath.getParent() != null) {
@@ -107,13 +124,17 @@ public class Storage {
                 break;
 
             case "D":
-                if (parts.length < 4) throw new WAllEException("Invalid deadline line: " + line);
+                if (parts.length < 4) {
+                    throw new WAllEException("Invalid deadline line: " + line);
+                }
                 LocalDateTime by = LocalDateTime.parse(parts[3].trim(), SAVE_DATE_TIME_FMT);
                 t = new Deadline(desc, by);
                 break;
 
             case "E":
-                if (parts.length < 5) throw new WAllEException("Invalid event line: " + line);
+                if (parts.length < 5) {
+                    throw new WAllEException("Invalid event line: " + line);
+                }
                 LocalDateTime from = LocalDateTime.parse(parts[3].trim(), SAVE_DATE_TIME_FMT);
                 LocalDateTime to = LocalDateTime.parse(parts[4].trim(), SAVE_DATE_TIME_FMT);
                 t = new Event(desc, from, to);

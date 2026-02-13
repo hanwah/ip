@@ -2,6 +2,10 @@ package walle;
 
 import java.util.ArrayList;
 
+/**
+ * Stores and manages the collection of tasks in memory.
+ * Provides operations to add, remove, update, and search tasks.
+ */
 public class TaskList {
     private final ArrayList<Task> tasks = new ArrayList<>();
 
@@ -19,11 +23,17 @@ public class TaskList {
         return tasks;
     }
 
+
     public void add(Task t) {
         assert t != null : "cannot add null task";
         tasks.add(t);
     }
 
+    /**
+     * Adds a task to the list.
+     *
+     * @param task Task to add.
+     */
     public Task addTodo(String desc) {
         assert desc != null : "todo description should not be null";
         assert !desc.isBlank() : "todo description should not be blank";
@@ -32,10 +42,25 @@ public class TaskList {
         return t;
     }
 
+    /**
+     * Deletes a task by its 1-based index.
+     *
+     * @param index 1-based index of the task to delete.
+     * @return The deleted task.
+     * @throws WAllEException If the index is invalid.
+     */
     public Task delete(int idx1Based) {
         assert idx1Based >= 1 && idx1Based <= tasks.size() : "delete index out of bounds";
         return tasks.remove(idx1Based - 1);
     }
+
+    /**
+     * Marks a task as done by its 1-based index.
+     *
+     * @param index 1-based index of the task to mark.
+     * @return The updated task.
+     * @throws WAllEException If the index is invalid.
+     */
 
     public Task mark(int idx1Based) {
         assert idx1Based >= 1 && idx1Based <= tasks.size() : "mark index out of bounds";
@@ -44,6 +69,13 @@ public class TaskList {
         return t;
     }
 
+    /**
+     * Unmarks a task as done by its 1-based index.
+     *
+     * @param index 1-based index of the task to mark.
+     * @return The updated task.
+     * @throws WAllEException If the index is invalid.
+     */
     public Task unmark(int idx1Based) {
         assert idx1Based >= 1 && idx1Based <= tasks.size() : "unmark index out of bounds";
         Task t = tasks.get(idx1Based - 1);
@@ -55,6 +87,11 @@ public class TaskList {
         return tasks.isEmpty();
     }
 
+    /**
+     * Returns a formatted string representing all tasks for display.
+     *
+     * @return Display string of all tasks.
+     */
 
     public String toDisplayString() {
         if (tasks.isEmpty()) {
@@ -67,18 +104,24 @@ public class TaskList {
         return sb.toString().trim();
     }
 
+    /**
+     * Finds tasks whose string representation contains the given keyword.
+     *
+     * @param keyword Keyword to search for.
+     * @return Formatted string containing matching tasks.
+     */
     public String findToDisplayString(String keyword) {
         assert keyword != null : "keyword should not be null";
         assert !keyword.isBlank() : "keyword should not be blank";
         StringBuilder sb = new StringBuilder("Here are the matching tasks in your list:\n");
-        boolean found = false;
+        boolean isFound = false;
         for (int i = 0; i < tasks.size(); i++) {
             if (tasks.get(i).toString().toLowerCase().contains(keyword.toLowerCase())) {
                 sb.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
-                found = true;
+                isFound = true;
             }
         }
-        if (!found) {
+        if (!isFound) {
             return "Here are the matching tasks in your list:\n(no matching tasks found)";
         }
         return sb.toString().trim();

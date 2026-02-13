@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Parses raw user input into command components.
+ * Provides helper methods to identify commands and extract arguments.
+ */
 public class Parser {
 
 
@@ -52,6 +56,13 @@ public class Parser {
     }
 
 
+    /**
+     * Extracts the description portion of a {@code todo} command.
+     *
+     * @param input Raw user input beginning with {@code todo}.
+     * @return The todo description.
+     * @throws WAllEException If the description is missing/invalid.
+     */
     public static String parseTodoDescription(String input) throws WAllEException {
         assert input != null : "input should not be null";
         assert isTodo(input) : "parseTodoDescription called when input is not a todo command";
@@ -175,7 +186,14 @@ public class Parser {
         }
     }
 
-    // while handling different commands such as "mark ", "unmark ", "delete "
+    /**
+     * Extracts the task index from a {@code mark} command.
+     *
+     * @param input Raw user input beginning with {@code mark}.
+     * @param taskCount Current number of tasks (for bounds validation).
+     * @return The 1-based task index.
+     * @throws WAllEException If the index is missing, non-numeric, or out of range.
+     */
     // AI attribution: Suggested using small wrapper methods to reuse parseIndex()
     public static int parseMarkIndex(String input, int taskCount) throws WAllEException {
         assert input != null : "input should not be null";

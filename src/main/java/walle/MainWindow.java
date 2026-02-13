@@ -5,6 +5,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
+/**
+ * The main JavaFX window for the chatbot application.
+ * Handles user interactions and displays bot responses.
+ */
 public class MainWindow {
 
     @FXML
@@ -15,6 +19,10 @@ public class MainWindow {
     private TextField userInput;
 
     private WALLE walle;
+
+    /**
+     * Initializes the UI components after FXML is loaded.
+     */
 
     @FXML
     public void initialize() {
@@ -28,6 +36,9 @@ public class MainWindow {
         );
     }
 
+    /**
+     * Handles user input from the text field and displays the bot response.
+     */
     @FXML
     private void handleUserInput() {
         String input = userInput.getText();

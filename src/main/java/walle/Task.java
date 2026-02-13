@@ -1,12 +1,22 @@
 package walle;
 
+/**
+ * Represents a task with a description and completion status.
+ * Concrete task types (e.g., Todo, Deadline, Event) extend this class.
+ */
+
 public class Task {
 
     private final String description;
     // Used enum instead of boolean
     private Status status;
 
-    // des stands for description
+    /**
+     * Creates a task with the given description.
+     *
+     * @param description Task description.
+     */
+
     public Task(String description) {
         assert description != null : "description should not be null";
         assert !description.isBlank() : "description should not be blank";
@@ -14,20 +24,33 @@ public class Task {
         this.status = Status.NOT_DONE;
     }
 
-    // When a task is done mark as true
+    /**
+     * Marks this task as done.
+     */
+
     public void Done() {
         status = Status.DONE;
     }
 
-    // when a task is not done mark as false
+    /**
+     * Marks this task as not done.
+     */
     public void Undone() {
         status = Status.NOT_DONE;
     }
 
-
+    /**
+     * checks if a task is done or not done.
+     */
     public boolean isDone() {
         return status == Status.DONE;
     }
+
+    /**
+     * Returns a user-friendly string representation of this task.
+     *
+     * @return Formatted task string.
+     */
 
     @Override
     public String toString() {
