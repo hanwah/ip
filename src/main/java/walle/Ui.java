@@ -3,13 +3,26 @@ package walle;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Handles user-facing messages and formatting for console output.
+ * Responsible for displaying prompts, responses, and separators.
+ */
+
 public class Ui {
     private static final String LINE = "____________________________________________________________";
     private final Scanner in = new Scanner(System.in);
 
+    /**
+     * Returns the welcome message shown when the program starts.
+     *
+     * @return Welcome message string.
+     */
+
     public void showWelcome() {
         System.out.println("Hello! my name is WALLE");
-        System.out.println("What can I do for you? If you are unfamiliar you can type 'help' to see all supported commands");
+        System.out.println("What can I do for you? "
+                + "If you are unfamiliar you can type 'help' "
+                + "to see all supported commands");
         System.out.println(LINE);
     }
 
@@ -37,11 +50,24 @@ public class Ui {
         showLine();
     }
 
+    /**
+     * Returns the goodbye message shown when the program exits.
+     *
+     * @return Goodbye message string.
+     */
+
     public void showGoodbye() {
         showLine();
         System.out.println("Goodbye!");
         showLine();
     }
+
+    /**
+     * Formats a task list message with the given content.
+     *
+     * @param content Body of the message.
+     * @return Formatted message string.
+     */
 
     public void showHelp() {
         System.out.println("Here are the currently supported commands that you can use =>:");

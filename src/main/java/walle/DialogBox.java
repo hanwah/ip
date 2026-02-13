@@ -9,6 +9,11 @@ import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 
+/**
+ * A UI component that displays dialog bubbles for user and bot messages.
+ * Provides factory methods for creating styled dialog boxes.
+ */
+
 public class DialogBox extends HBox {
     @FXML
     private Label dialog;
@@ -16,6 +21,13 @@ public class DialogBox extends HBox {
     @FXML
     private ImageView displayPicture;
 
+    /**
+     * Creates a dialog box representing the user's input.
+     *
+     * @param text User's message.
+     * @param img User's avatar image.
+     * @return A dialog box for the user.
+     */
     private DialogBox(String text, Image img) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/DialogBox.fxml"));
@@ -41,6 +53,13 @@ public class DialogBox extends HBox {
         return db;
     }
 
+    /**
+     * Creates a dialog box representing the bot's response.
+     *
+     * @param text Bot's message.
+     * @param img Bot's avatar image.
+     * @return A dialog box for the bot.
+     */
     public static DialogBox getDukeDialog(String text) {
         Image walleImg = loadImage("/images/JO.jpeg");
         DialogBox db = new DialogBox("WALLE: " + text, walleImg);
