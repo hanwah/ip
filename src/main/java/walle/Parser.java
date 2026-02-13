@@ -180,4 +180,9 @@ public class Parser {
         return parseIndex(input.substring(7).trim(), "delete", taskCount);
     }
 
+    public static boolean isUndo(String input) {
+        return input.equalsIgnoreCase("undo");
+    }
+
+
 }

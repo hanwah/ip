@@ -75,4 +75,25 @@ public class TaskList {
         }
         return sb.toString().trim();
     }
+
+    /**
+     * Inserts a task at the given 1-based index.
+     *
+     * @param idx1Based 1-based index at which to insert.
+     * @param task Task to insert.
+     */
+    public void addAt(int idx1Based, Task task) {
+        tasks.add(idx1Based - 1, task);
+    }
+
+    /**
+     * Returns the task at the given 1-based index.
+     *
+     * @param idx1Based 1-based index.
+     * @return Task at the given index.
+     */
+    public Task get(int idx1Based) {
+        return tasks.get(idx1Based - 1);
+    }
+
 }
