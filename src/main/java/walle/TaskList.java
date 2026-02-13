@@ -95,7 +95,7 @@ public class TaskList {
 
     public String toDisplayString() {
         if (tasks.isEmpty()) {
-            return "(You have no task available)";
+            return "(You have no task available now)";
         }
         StringBuilder sb = new StringBuilder("These are all your tasks:\n");
         for (int i = 0; i < tasks.size(); i++) {
