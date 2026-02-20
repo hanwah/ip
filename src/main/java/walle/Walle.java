@@ -6,6 +6,7 @@ import java.util.Deque;
 
 public class Walle {
     private final Ui ui;
+    private boolean isExit = false;
     private final Storage storage;
     private final TaskList tasks;
     private final Deque<UndoAction> undoStack = new ArrayDeque<>();
@@ -13,6 +14,7 @@ public class Walle {
     private interface UndoAction {
         String undo() throws WalleException;
     }
+
 
 
     /**
@@ -53,7 +55,8 @@ public class Walle {
         assert input != null : "UI should never pass null input";
         try {
             if (Parser.isBye(input)) {
-                return "Goodbye!";
+                isExit = true;
+                return "Bye. Hope to see you again soon!";
             }
 
             if (Parser.isHelp(input)) {
@@ -204,6 +207,10 @@ public class Walle {
     // GUI uses this to know if should exit */
     public boolean isExitCommand(String input) {
         return Parser.isBye(input);
+    }
+
+    public boolean isExit() {
+        return isExit;
     }
 }
 

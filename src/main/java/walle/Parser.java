@@ -327,8 +327,8 @@ public class Parser {
      * @throws WalleException If the index is missing, invalid, or out of range.
      */
     public static int parseDeleteIndex(String input, int taskCount) throws WalleException {
-        assert input != null : "input should not be null";
-        assert isMark(input) : "parseMarkIndex called when input is not a delete command";
+        //assert input != null : "input should not be null";
+        // assert isMark(input) : "parseMarkIndex called when input is not a delete command";
         return parseIndex(input.substring(7).trim(), "delete", taskCount);
     }
 

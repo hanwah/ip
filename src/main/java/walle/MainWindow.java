@@ -1,9 +1,11 @@
 package walle;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+
 
 /**
  * The main JavaFX window for the chatbot application.
@@ -57,8 +59,10 @@ public class MainWindow {
         userInput.clear();
 
         if (walle.isExitCommand(input)) {
-            // Optional: close window after bye
-            // ((Stage) dialogContainer.getScene().getWindow()).close();
+            if (walle.isExitCommand(input)) {
+                userInput.setDisable(true);
+                Platform.exit();
+            }
         }
     }
 }
