@@ -312,7 +312,7 @@ public class Parser {
      */
     public static int parseUnmarkIndex(String input, int taskCount) throws WalleException {
         assert input != null : "input should not be null";
-        assert isMark(input) : "parseMarkIndex called when input is not a unmark command";
+        assert isUnmark(input) : "parseUnmarkIndex called when input is not an unmark command";
         return parseIndex(input.substring(7).trim(), "unmark", taskCount);
     }
 

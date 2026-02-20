@@ -15,11 +15,18 @@
             </content>
         </ScrollPane>
 
-        <TextField fx:id="userInput" promptText="Enter command..."
+        <!-- IMPORTANT: add onAction here so Enter triggers the same handler -->
+        <TextField fx:id="userInput"
+                   promptText="Enter command..."
+                   onAction="#handleUserInput"
                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="80.0"
                    AnchorPane.bottomAnchor="0.0" prefHeight="50.0" />
 
-        <Button text="Send" onAction="#handleUserInput"
+        <!-- IMPORTANT: defaultButton makes Enter work anywhere in window too -->
+        <Button fx:id="sendButton"
+                text="Send"
+                defaultButton="true"
+                onAction="#handleUserInput"
                 AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0"
                 prefWidth="80.0" prefHeight="50.0" />
     </children>
