@@ -5,6 +5,7 @@
 ---
 
 ## Product Screenshot
+![Ui.png](Ui.png)
 
 A representative screenshot of Walle is included in the repository at:
 
@@ -86,6 +87,16 @@ Example:
 
 ---
 
+### Undo the latest command
+
+Undo the most recent command 
+
+Example: Todo chores
+         undo
+         todo command will be automatically reverted
+
+---
+
 ### Show help
 
 Displays a list of all supported commands.
@@ -106,4 +117,26 @@ Walle will display a goodbye message before closing.
 - Dates and times must follow the format `yyyy-MM-dd HHmm`.
 - Tasks are saved automatically and loaded on startup.
 - Clear error messages are shown for invalid commands or formats.
+
+
+---
+
+## Command Summary
+
+| Command                                         | Description                        |
+|-------------------------------------------------|------------------------------------|
+| `todo <description>`                            | Adds a todo task                   |
+| `deadline <description> /by <value>`            | Adds a deadline task               |
+| `event <description> /from <value> /to <value>` | Adds an event task                 |
+| `list`                                          | Lists all tasks                    |
+| `mark <task_number>`                            | Marks a task as done               |
+| `unmark <task_number>`                          | Marks a task as not done           |
+| `delete <task_number>`                          | Deletes a task                     |
+| `find <keyword>`                                | Finds tasks containing the keyword |
+| `help`                                          | Lists all commands                 |
+| `help <command_number>`                         | Shows detailed command help        |
+| `bye`                                           | Exits the application              |
+| `undo`                                          | Reverts most recent commad         |
+
+---
 
