@@ -11,12 +11,12 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-    private final WALLE walle = new WALLE("data/walle.txt");
+    private final Walle walle = new Walle("data/walle.txt");
 
     /**
      * Starts the application.
      *
-     * @param args Command-line arguments.
+     * @param stage Command-line arguments.
      */
     @Override
     public void start(Stage stage) throws Exception {
@@ -27,7 +27,7 @@ public class Main extends Application {
         controller.setWalle(walle);
 
         stage.setScene(scene);
-        stage.setTitle("WALLE");
+        stage.setTitle("Walle");
         stage.show();
     }
 }

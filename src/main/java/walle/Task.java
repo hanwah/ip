@@ -16,7 +16,6 @@ public class Task {
      *
      * @param description Task description.
      */
-
     public Task(String description) {
         assert description != null : "description should not be null";
         assert !description.isBlank() : "description should not be blank";
@@ -28,19 +27,22 @@ public class Task {
      * Marks this task as done.
      */
 
-    public void Done() {
+    public void markDone() {
         status = Status.DONE;
     }
 
     /**
      * Marks this task as not done.
      */
-    public void Undone() {
+    public void markUndone() {
         status = Status.NOT_DONE;
     }
 
     /**
      * checks if a task is done or not done.
+     * Returns whether this task is marked as done
+     *
+     * @return True if done , false otherwise
      */
     public boolean isDone() {
         return status == Status.DONE;

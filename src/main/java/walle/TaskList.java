@@ -9,21 +9,44 @@ import java.util.ArrayList;
 public class TaskList {
     private final ArrayList<Task> tasks = new ArrayList<>();
 
+    /**
+     * Creates an empty task list.
+     */
     public TaskList() {}
 
+    /**
+     * Creates a task list initialized with tasks loaded from storage.
+     *
+     * @param loaded
+     */
     public TaskList(ArrayList<Task> loaded) {
         tasks.addAll(loaded);
     }
 
+    /**
+     * Returns the number of tasks in the list.
+     *
+     * @return Number of tasks.
+     */
     public int size() {
         return tasks.size();
     }
 
+    /**
+     * Returns the underlying list of tasks.
+     *
+     * @return Backing task list.
+     */
     public ArrayList<Task> getTasks() {
         return tasks;
     }
 
 
+    /**
+     * Adds a task to the list.
+     *
+     * @param t
+     */
     public void add(Task t) {
         assert t != null : "cannot add null task";
         tasks.add(t);
@@ -32,7 +55,7 @@ public class TaskList {
     /**
      * Adds a task to the list.
      *
-     * @param task Task to add.
+     * @param desc Task to add.
      */
     public Task addTodo(String desc) {
         assert desc != null : "todo description should not be null";
@@ -45,9 +68,9 @@ public class TaskList {
     /**
      * Deletes a task by its 1-based index.
      *
-     * @param index 1-based index of the task to delete.
+     * @param idx1Based 1-based index of the task to delete.
      * @return The deleted task.
-     * @throws WAllEException If the index is invalid.
+     * @throws WalleException If the index is invalid.
      */
     public Task delete(int idx1Based) {
         assert idx1Based >= 1 && idx1Based <= tasks.size() : "delete index out of bounds";
@@ -57,32 +80,36 @@ public class TaskList {
     /**
      * Marks a task as done by its 1-based index.
      *
-     * @param index 1-based index of the task to mark.
+     * @param idx1Based 1-based index of the task to mark.
      * @return The updated task.
-     * @throws WAllEException If the index is invalid.
+     * @throws WalleException If the index is invalid.
      */
-
     public Task mark(int idx1Based) {
         assert idx1Based >= 1 && idx1Based <= tasks.size() : "mark index out of bounds";
         Task t = tasks.get(idx1Based - 1);
-        t.Done();
+        t.markDone();
         return t;
     }
 
     /**
      * Unmarks a task as done by its 1-based index.
      *
-     * @param index 1-based index of the task to mark.
+     * @param idx1Based 1-based index of the task to mark.
      * @return The updated task.
-     * @throws WAllEException If the index is invalid.
+     * @throws WalleException If the index is invalid.
      */
     public Task unmark(int idx1Based) {
         assert idx1Based >= 1 && idx1Based <= tasks.size() : "unmark index out of bounds";
         Task t = tasks.get(idx1Based - 1);
-        t.Undone();
+        t.markUndone();
         return t;
     }
 
+    /**
+     * Returns whether the task list is empty.
+     *
+     * @return True if empty; false otherwise.
+     */
     public boolean isEmpty() {
         return tasks.isEmpty();
     }

@@ -8,11 +8,11 @@ import java.time.format.DateTimeFormatter;
  * An {@code Event} is considered complete when its status is marked done.
  */
 public class Event extends Task {
+    private static final DateTimeFormatter OUT_FMT =
+            DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm"); // e.g. Oct 15 2019 18:00
     private final LocalDateTime from;
     private final LocalDateTime to;
 
-    private static final DateTimeFormatter OUT_FMT =
-            DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm"); // e.g. Oct 15 2019 18:00
 
     /**
      * Creates an event task.

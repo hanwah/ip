@@ -18,7 +18,7 @@ public class MainWindow {
     @FXML
     private TextField userInput;
 
-    private WALLE walle;
+    private Walle walle;
 
     /**
      * Initializes the UI components after FXML is loaded.
@@ -29,7 +29,12 @@ public class MainWindow {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
-    public void setWalle(WALLE w) {
+    /**
+     * Sets the main application instance so that UI callbacks can delegate to it.
+     *
+     * @param w Application instance.
+     */
+    public void setWalle(Walle w) {
         this.walle = w;
         dialogContainer.getChildren().add(
                 DialogBox.getDukeDialog(walle.getWelcomeMessage())

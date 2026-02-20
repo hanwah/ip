@@ -4,14 +4,14 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 
-public class WALLE {
+public class Walle {
     private final Ui ui;
     private final Storage storage;
     private final TaskList tasks;
     private final Deque<UndoAction> undoStack = new ArrayDeque<>();
 
     private interface UndoAction {
-        String undo() throws WAllEException;
+        String undo() throws WalleException;
     }
 
 
@@ -20,7 +20,7 @@ public class WALLE {
      * Receives user input, coordinates parsing and task operations, and
      * returns the response string for the UI to display.
      */
-    public WALLE(String saveFilePath) {
+    public Walle(String saveFilePath) {
         ui = new Ui();
         storage = new Storage(saveFilePath);
 
@@ -28,7 +28,7 @@ public class WALLE {
         TaskList loaded;
         try {
             loaded = new TaskList(storage.load());
-        } catch (WAllEException e) {
+        } catch (WalleException e) {
             // In GUI, we return a message instead of printing.
             loaded = new TaskList();
         }
@@ -37,7 +37,7 @@ public class WALLE {
 
     // Returns the welcome message shown when app starts
     public String getWelcomeMessage() {
-        return "Hello! my name is WALLE\n"
+        return "Hello! my name is Walle\n"
                 + "What can I do for you?\n"
                 + "If you are unfamiliar you can type 'help' to see all supported commands";
     }
@@ -181,18 +181,18 @@ public class WALLE {
             }
 
 
-            throw new WAllEException("I don't recognise that command. Type 'help' to see commands.");
+            throw new WalleException("I don't recognise that command. Type 'help' to see commands.");
 
-        } catch (WAllEException e) {
+        } catch (WalleException e) {
             return e.getMessage();
         } catch (Exception e) {
             return "Oops — something went wrong: " + e.getMessage();
         }
     }
 
-    private String undoLast() throws WAllEException {
+    private String undoLast() throws WalleException {
         if (undoStack.isEmpty()) {
-            throw new WAllEException("Nothing to undo.");
+            throw new WalleException("Nothing to undo.");
         }
 
         UndoAction action = undoStack.pop();

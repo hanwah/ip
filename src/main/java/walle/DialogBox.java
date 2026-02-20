@@ -1,4 +1,5 @@
 package walle;
+import java.io.IOException;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,7 +8,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
-import java.io.IOException;
+
+
 
 /**
  * A UI component that displays dialog bubbles for user and bot messages.
@@ -46,6 +48,12 @@ public class DialogBox extends HBox {
         return new Image(DialogBox.class.getResourceAsStream(path));
     }
 
+    /**
+     * Returns a dialog box styled as a user message.
+     *
+     * @param text Message text.
+     * @return A dialog box for the user.
+     */
     public static DialogBox getUserDialog(String text) {
         Image userImg = loadImage("/images/DIO.jpeg");
         DialogBox db = new DialogBox("You: " + text, userImg);
@@ -57,12 +65,12 @@ public class DialogBox extends HBox {
      * Creates a dialog box representing the bot's response.
      *
      * @param text Bot's message.
-     * @param img Bot's avatar image.
+     * @param text Bot's avatar image.
      * @return A dialog box for the bot.
      */
     public static DialogBox getDukeDialog(String text) {
         Image walleImg = loadImage("/images/JO.jpeg");
-        DialogBox db = new DialogBox("WALLE: " + text, walleImg);
+        DialogBox db = new DialogBox("Walle: " + text, walleImg);
         db.getStyleClass().add("walle-dialog");
         return db;
     }

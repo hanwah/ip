@@ -6,6 +6,11 @@ package walle;
  */
 
 public class Launcher {
+    /**
+     * Launches the JavaFX application
+     * @param args
+     */
+
     public static void main(String[] args) {
         Main.launch(Main.class, args);
     }

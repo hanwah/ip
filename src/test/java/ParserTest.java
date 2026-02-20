@@ -17,13 +17,13 @@ public class ParserTest {
 
     @Test
     void parseDeadline_missingBy_throws() {
-        assertThrows(WAllEException.class, () ->
+        assertThrows(WalleException.class, () ->
                 Parser.parseDeadline("deadline return book 2019-10-15 1800"));
     }
 
     @Test
     void parseDeadline_badDatetime_throws() {
-        assertThrows(WAllEException.class, () ->
+        assertThrows(WalleException.class, () ->
                 Parser.parseDeadline("deadline return book /by 2019/10/15 1800"));
     }
 
@@ -37,13 +37,13 @@ public class ParserTest {
 
     @Test
     void parseEvent_endBeforeStart_throws() {
-        assertThrows(WAllEException.class, () ->
+        assertThrows(WalleException.class, () ->
                 Parser.parseEvent("event meeting /from 2019-10-15 1600 /to 2019-10-15 1400"));
     }
 
     @Test
     void parseTodoDescription_empty_throws() {
-        assertThrows(WAllEException.class, () ->
+        assertThrows(WalleException.class, () ->
                 Parser.parseTodoDescription("todo"));
     }
 
@@ -54,7 +54,7 @@ public class ParserTest {
 
     @Test
     void parseMarkIndex_outOfRange_throws() {
-        assertThrows(WAllEException.class, () ->
+        assertThrows(WalleException.class, () ->
                 Parser.parseMarkIndex("mark 9", 3));
     }
 }

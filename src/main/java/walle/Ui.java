@@ -14,36 +14,54 @@ public class Ui {
 
     /**
      * Returns the welcome message shown when the program starts.
-     *
-     * @return Welcome message string.
      */
-
     public void showWelcome() {
-        System.out.println("Hello! my name is WALLE");
+        System.out.println("Hello! my name is Walle");
         System.out.println("What can I do for you? "
                 + "If you are unfamiliar you can type 'help' "
                 + "to see all supported commands");
         System.out.println(LINE);
     }
 
+    /**
+     * Prints a horizontal separator line.
+     */
     public void showLine() {
         System.out.println(LINE);
     }
 
+    /**
+     * Reads the next line of user input.
+     *
+     * @return Raw user input.
+     */
     public String readCommand() {
         return in.nextLine();
     }
 
+    /**
+     * Displays a normal message to the user.
+     *
+     * @param msg Message to show.
+     */
     public void showMessage(String msg) {
         System.out.println(msg);
     }
 
+    /**
+     * Displays an error message to the user.
+     *
+     * @param msg Error message.
+     */
     public void showError(String msg) {
         showLine();
         System.out.println(msg);
         showLine();
     }
 
+    /**
+     * Displays a standard loading error message.
+     */
     public void showLoadingError() {
         showLine();
         System.out.println("Warning: save file is corrupted/unreadable, starting with empty list.");
@@ -52,10 +70,7 @@ public class Ui {
 
     /**
      * Returns the goodbye message shown when the program exits.
-     *
-     * @return Goodbye message string.
      */
-
     public void showGoodbye() {
         showLine();
         System.out.println("Goodbye!");
@@ -63,12 +78,8 @@ public class Ui {
     }
 
     /**
-     * Formats a task list message with the given content.
-     *
-     * @param content Body of the message.
-     * @return Formatted message string.
+     * Displays a list of all supported commands and their formats.
      */
-
     public void showHelp() {
         System.out.println("Here are the currently supported commands that you can use =>:");
         System.out.println("  list");
@@ -82,7 +93,12 @@ public class Ui {
         System.out.println("  bye");
     }
 
-    // Shows task list
+
+    /**
+     * Displays all tasks currently stored in the task list.
+     *
+     * @param tasks The task list to display.
+     */
     public void showTaskList(TaskList tasks) {
         showLine();
         System.out.println("These are all your tasks:");
@@ -96,7 +112,12 @@ public class Ui {
         showLine();
     }
 
-    // Shows tasks that matched keyword
+
+    /**
+     * Displays the tasks that match a search keyword.
+     *
+     * @param matches List of tasks that match the search criteria.
+     */
     public void showFindResults(ArrayList<Task> matches) {
         showLine();
         System.out.println("Here are the matching tasks in your list:");
@@ -112,6 +133,12 @@ public class Ui {
         showLine();
     }
 
+    /**
+     * Displays a confirmation message after a task is added.
+     *
+     * @param t         The task that was added.
+     * @param taskCount The total number of tasks after addition.
+     */
     public void showTaskAdded(Task t, int taskCount) {
         showLine();
         System.out.println("Got it. I've added this task:");
@@ -120,6 +147,12 @@ public class Ui {
         showLine();
     }
 
+    /**
+     * Displays a confirmation message after a task is deleted.
+     *
+     * @param removed   The task that was removed.
+     * @param taskCount The total number of tasks after deletion.
+     */
     public void showTaskDeleted(Task removed, int taskCount) {
         showLine();
         System.out.println("Noted. I've removed this task:");
@@ -128,6 +161,11 @@ public class Ui {
         showLine();
     }
 
+    /**
+     * Displays a confirmation message after a task is marked as done.
+     *
+     * @param t The task that was marked as done.
+     */
     public void showTaskMarked(Task t) {
         showLine();
         System.out.println("Nice! I've marked this task as done:");
@@ -135,6 +173,11 @@ public class Ui {
         showLine();
     }
 
+    /**
+     * Displays a confirmation message after a task is marked as not done.
+     *
+     * @param t The task that was unmarked.
+     */
     public void showTaskUnmarked(Task t) {
         showLine();
         System.out.println("OK, I've marked this task as not done yet:");
@@ -142,6 +185,9 @@ public class Ui {
         showLine();
     }
 
+    /**
+     * Closes the input scanner and releases associated resources.
+     */
     public void close() {
         in.close();
     }

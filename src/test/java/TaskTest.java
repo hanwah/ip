@@ -16,11 +16,11 @@ public class TaskTest {
     @Test
     void doneAndUndone_updatesStatus() {
         Task t = new Task("read book");
-        t.Done();
+        t.markDone();
         assertTrue(t.isDone());
         assertTrue(t.toString().startsWith("[X]"));
 
-        t.Undone();
+        t.markUndone();
         assertFalse(t.isDone());
         assertTrue(t.toString().startsWith("[ ]"));
     }
